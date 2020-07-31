@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1596234373 source:c:\users\ivan_\desktop\booleanmatrixcalculator\src\matrix.cpp
+1596235726 source:c:\users\ivan_\desktop\booleanmatrixcalculator\src\matrix.cpp
 	"Matrix.h"
 	<iostream>
 
-1596234452 c:\users\ivan_\desktop\booleanmatrixcalculator\include\matrix.h
+1596235726 c:\users\ivan_\desktop\booleanmatrixcalculator\include\matrix.h
 
 1596234687 source:c:\users\ivan_\desktop\booleanmatrixcalculator\main.cpp
 	<iostream>

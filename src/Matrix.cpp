@@ -62,6 +62,35 @@ void Matrix::getUnion(Matrix &m1, Matrix &m2)
     }
 }
 
+void Matrix::getComplement(Matrix &m)
+{
+    this->rows = m.rows;
+    this->cols = m.cols;
+    for(int i=0;i<rows;i++)
+    {
+        for(int j=0;j<cols;j++)
+        {
+            this->matrix[i][j] = !m.matrix[i][j];
+        }
+    }
+}
+
+void Matrix:: getConjunction(Matrix &m1, Matrix &m2)
+{
+    if(m1.isValid(m2))
+    {
+        this->rows = m1.cols;
+        this->cols = m1.rows;
+        for(int i=0; i<this->rows;i++)
+        {
+            for(int j=0; j<this->cols;j++)
+            {
+                this->matrix[i][j] = (bool) m1.matrix[i][j] && m2.matrix[i][j];
+            }
+        }
+    }
+}
+
 Matrix::~Matrix()
 {
 }

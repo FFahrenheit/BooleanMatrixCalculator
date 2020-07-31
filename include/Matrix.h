@@ -10,6 +10,8 @@ class Matrix
         Matrix(int,int);
         ~Matrix();
         void getUnion(Matrix &,Matrix &);
+        void getConjunction(Matrix &, Matrix &);
+        void getComplement(Matrix &);
         bool isValid(Matrix);
         void print();
     protected:
