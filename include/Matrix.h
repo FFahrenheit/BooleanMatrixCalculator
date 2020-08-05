@@ -12,6 +12,7 @@ class Matrix
         void getUnion(Matrix &,Matrix &);
         void getConjunction(Matrix &, Matrix &);
         void getComplement(Matrix &);
+        void getComposition(Matrix &, Matrix &);
         bool isValid(Matrix);
         void print();
     protected:

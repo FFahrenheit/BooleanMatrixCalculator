@@ -6,6 +6,8 @@ using namespace std;
 void calculateUnion();
 void calculateConjunction();
 void calculateComplement();
+void calculateInverse();
+void calculateComposition();
 int getDimension();
 
 int main()
@@ -15,7 +17,8 @@ int main()
     {
         system("cls");
         cout << "Bienvenido a la calculadora de Matrices booleanas\nSelecciona la opcion deseada\n";
-        cout << "[1]: Union\n[2]: Conjuncion\n[3]: Complemento\n[n]: Salir\nOpcion: ";
+        cout << "[1]: Union\n[2]: Conjuncion\n[3]: Complemento\n[4]: Inversa\n[5]: Composicion\n";
+        cout << "[6]: Salir\nOpcion: ";
         cin >> opc;
         switch(opc)
         {
@@ -28,6 +31,12 @@ int main()
             case '3':
                 calculateComplement();
                 break;
+            case '4':
+                calculateInverse();
+                break;
+            case '5':
+                calculateComposition();
+                break;
             default:
                  cout << "Ingrese una opcion valida\n";
                  system("pause");
@@ -35,6 +44,29 @@ int main()
         }
     }while(opc != 'n');
     return 0;
+}
+
+void calculateComposition()
+{
+    int n = getDimension();
+    Matrix m1 = Matrix(n,n);
+    Matrix m2 = Matrix(n,n);
+    Matrix m3 = Matrix();
+    m3.getComposition(m1,m2);
+    if(m3.cols != 0)
+    {
+        system("cls");
+        m1.print();
+        cout << "      (+)\n";
+        m2.print();
+        cout << "      =\n";
+        m3.print();
+    }
+    else
+    {
+        cout << "No se pudo ejecutar la operacion\n";
+    }
+    system("pause");
 }
 
 void calculateConjunction()
@@ -79,6 +111,26 @@ void calculateUnion()
     else
     {
         cout << "No se pudo ejecutar la operacion\n";
+    }
+    system("pause");
+}
+
+void calculateInverse()
+{
+    int n = getDimension();
+    Matrix m = Matrix(n,n);
+    Matrix res;
+    res.getComplement(m);
+    if(res.cols !=0)
+    {
+        system("cls");
+        m.print();
+        cout << "Complemento =\n";
+        res.print();
+    }
+    else
+    {
+        cout << "No se pudo calcular el complemento\n";
     }
     system("pause");
 }

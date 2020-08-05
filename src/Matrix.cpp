@@ -62,6 +62,27 @@ void Matrix::getUnion(Matrix &m1, Matrix &m2)
     }
 }
 
+void Matrix::getComposition(Matrix &m1, Matrix &m2)
+{
+    if(m1.cols == m2.rows)
+    {
+        this->rows = m1.rows;
+        this->cols = m2.cols;
+        for(int i=0; i<this->rows; i++)
+        {
+            for(int j=0;j<this->cols;j++)
+            {
+                bool eq = false;
+                for(int k=0; k<m1.cols;k++)
+                {
+                    eq = eq || (m1.matrix[i][k] && m2.matrix[k][j]);
+                }
+                this->matrix[i][j] = eq;
+            }
+        }
+    }
+}
+
 void Matrix::getComplement(Matrix &m)
 {
     this->rows = m.rows;
