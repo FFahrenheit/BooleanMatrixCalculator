@@ -37,12 +37,14 @@ int main()
             case '5':
                 calculateComposition();
                 break;
+            case '6':
+                break;
             default:
                  cout << "Ingrese una opcion valida\n";
                  system("pause");
                  break;
         }
-    }while(opc != 'n');
+    }while(opc != '6');
     return 0;
 }
 
