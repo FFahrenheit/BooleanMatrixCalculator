@@ -5,6 +5,7 @@
  */
 package booleanmatrixjava;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -14,22 +15,30 @@ import java.util.Scanner;
 public class BooleanMatrixJava
 { 
     public static Scanner input;
+    public static ArrayList<Matrix> matrices;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) 
     {
         input = new Scanner(System.in);
-        int menu;
+        matrices = new ArrayList<>();
+        String menu;
+        int choice;
         do
         {
             System.out.println("Ingrese la opción a probar");
-            System.out.println("1:Union\n2:Conjuncion\n3:Complemento\n4:Inversa");
-            System.out.println("5:Composicion:\n6:Salir");
+            System.out.println("0:Agregar matriz\n1:Union\n2:Conjuncion\n3:Complemento\n4:Inversa");
+            System.out.println("5:Composicion:\n6:Ver matrices\n7:Salir");
             System.out.print("Tu elección: ");
-            menu = input.nextInt();
-            switch(menu)
+            menu = input.next();
+            choice = validNumber(menu)? Integer.parseInt(menu) : -1;
+            switch(choice)
             {
+                case 0:
+                    agregar();
+                    break;
                 case 1:
                     union();
                     break;
@@ -46,18 +55,51 @@ public class BooleanMatrixJava
                     composicion();
                     break;
                 case 6:
+                    mostrar();
+                    break;
+                case 7:
                     System.out.println("¡Gracias!");
                     break;
                 default:
                     System.out.println("Pruebe de nuevo");
                     break;
             }
-            if(menu!=7)
+            if(choice!=7)
             {
-                System.out.print("Presione una tecla y emter para continuar");
+                System.out.print("Presione una tecla y enter para continuar");
                 input.next();
             }
-        }while(menu!=7);    
+        }while(choice!=7);    
+    }
+    
+    private static void mostrar()
+    {
+        if(matrices.isEmpty())
+        {
+            System.out.println("No hay matrices");
+        }
+        else
+        {
+            String choice;
+            System.out.println("Elija la matriz de su preferencia: ");
+            for (int i = 0; i < matrices.size(); i++) 
+            {
+                System.out.println("["+(i+1)+"]: Matriz "+(i+1)+" ("+matrices.get(i).rowCount+"x"+matrices.get(i).columnCount+")");
+            }
+            do
+            {
+                System.out.print("Eleccion: ");
+                choice = input.next();
+            }while(!validNumber(choice) || Integer.parseInt(choice)<=0 || Integer.parseInt(choice)>matrices.size());
+            matrices.get(Integer.parseInt(choice) - 1).print();
+        }
+    }
+    
+    private static void agregar()
+    {
+        System.out.println("Ingrese el tamaño de la matriz: ");
+        int num = getDim();
+        matrices.add(new Matrix(askMatrix(num, num)));
     }
         
     
@@ -69,26 +111,47 @@ public class BooleanMatrixJava
         {
             for (int j = 0; j <_cols; j++) 
             {
-                boolean condition = false;
-                int value;
+                String value;
                 do
                 {
                     System.out.print("Ingrese el miembro ["+i+"]["+j+"]: ");
-                    value = input.nextInt();
-                }while(value!=0 && value!=1);
-                matrix[i][j] = value == 1;
+                    value = input.next();
+                }while(!validNumber(value) || (Integer.parseInt(value) != 0 && Integer.parseInt(value) !=1));
+                matrix[i][j] = Integer.parseInt(value) == 1;
             }
         }
         return matrix;
     }
     
+    private static Matrix getMatrix()
+    {
+        if(matrices.isEmpty())
+        {
+            return null;
+        }
+        String choice;
+        System.out.println("Elija la matriz de su preferencia: ");
+        for (int i = 0; i < matrices.size(); i++) 
+        {
+            System.out.println("["+(i+1)+"]: Matriz "+(i+1)+" ("+matrices.get(i).rowCount+"x"+matrices.get(i).columnCount+")");
+        }
+        do
+        {
+            System.out.print("Eleccion: ");
+            choice = input.next();
+        }while(!validNumber(choice) || Integer.parseInt(choice)<=0 || Integer.parseInt(choice)>matrices.size());
+        return matrices.get(Integer.parseInt(choice) - 1);
+    }
+    
     private static void union()
     {
-        int dim;
-        System.out.println("Ingrese las dimensiones de las matrices");
-        dim = getDim();
-        Matrix m1 = new Matrix(askMatrix(dim,dim));
-        Matrix m2 = new Matrix(askMatrix(dim,dim));
+        if(matrices.isEmpty())
+        {
+            System.out.println("Ingrese primero matrices");
+            return;
+        }
+        Matrix m1 = getMatrix();
+        Matrix m2 = getMatrix();
         Matrix result = m1.getUnion(m1, m2);
         if(result!=null)
         {
@@ -106,11 +169,13 @@ public class BooleanMatrixJava
     
     private static void composicion()
     {
-        int dim;
-        System.out.println("Ingrese las dimensiones de las matrices");
-        dim = getDim();
-        Matrix m1 = new Matrix(askMatrix(dim,dim));
-        Matrix m2 = new Matrix(askMatrix(dim,dim));
+        if(matrices.isEmpty())
+        {
+            System.out.println("Ingrese primero matrices");
+            return;
+        }
+        Matrix m1 = getMatrix();
+        Matrix m2 = getMatrix();
         Matrix result = m1.getComposition(m1, m2);
         if(result!=null)
         {
@@ -128,11 +193,13 @@ public class BooleanMatrixJava
     
     private static void conjuncion()
     {
-        int dim;
-        System.out.println("Ingrese las dimensiones de las matrices");
-        dim = getDim();
-        Matrix m1 = new Matrix(askMatrix(dim,dim));
-        Matrix m2 = new Matrix(askMatrix(dim,dim));
+        if(matrices.isEmpty())
+        {
+            System.out.println("Ingrese primero matrices");
+            return;
+        }
+        Matrix m1 = getMatrix();
+        Matrix m2 = getMatrix();
         Matrix result = m1.getConjunction(m1, m2);
         if(result!=null)
         {
@@ -150,10 +217,12 @@ public class BooleanMatrixJava
     
     private static void complemento()
     {
-        int dim;
-        System.out.println("Ingrese las dimensiones de la matriz");
-        dim = getDim();
-        Matrix m1 = new Matrix(askMatrix(dim,dim));
+        if(matrices.isEmpty())
+        {
+            System.out.println("Ingrese primero una matriz");
+            return;
+        }
+        Matrix m1 = getMatrix();
         Matrix result = m1.getComplement(m1);
         if(result!=null)
         {
@@ -169,10 +238,12 @@ public class BooleanMatrixJava
     
     private static void inversa()
     {
-        int dim;
-        System.out.println("Ingrese las dimensiones de la matriz");
-        dim = getDim();
-        Matrix m1 = new Matrix(askMatrix(dim,dim));
+        if(matrices.isEmpty())
+        {
+            System.out.println("Ingrese primero una matriz");
+            return;
+        }
+        Matrix m1 = getMatrix();
         Matrix result = m1.getInverse(m1);
         if(result!=null)
         {
@@ -188,12 +259,25 @@ public class BooleanMatrixJava
     
     private static int getDim()
     {
-        int num;
+        String num;
         do
         {
             System.out.print("Dimension: ");
-            num = input.nextInt();
-        }while(num<=1 || num>=6);
-        return num;
+            num = input.next();
+        }while(!validNumber(num) || Integer.parseInt(num)>6 || Integer.parseInt(num)<=1);
+        return Integer.parseInt(num);
+    }
+    
+    private static boolean validNumber(String num)
+    {
+        try
+        {
+            Integer.parseInt(num);
+            return true;
+        }
+        catch(NumberFormatException e)
+        {
+            return false;
+        }
     }
 }
